@@ -36,7 +36,7 @@ class Evolution():
         """
             Generate a random genome
         """
-        size = random.randint(1,1000)
+        size = random.randint(1,50)
         gene = ""
         for i in range(0,size,1):
             gene+=random.choice(self.instructions)
@@ -52,15 +52,15 @@ class Evolution():
             for org in self.population:
                 org.evaluate(self.target)
             self.population.sort()
-            print " Max fitness: "+str(self.population[1].fitness)
+            print " Max fitness: "+str(self.population[::-1][1].fitness)
             try:
                 if self.population[0] >=self.ppop[0]:
-                     self.ppop = self.population[0:10] # The top ten organisms
+                     self.ppop = self.population[::-1][0:10] # The top ten organisms
                 else:
                      self.population = self.ppop # We got worse! go back!
             except:
                 self.ppop = self.population
-            self.population = self.population[0:10]
+            self.population = self.population[::-1][0:10]
             self.breed()
             gcount+=1
             

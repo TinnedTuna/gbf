@@ -11,8 +11,11 @@ import tape
 
 
 class BFInterpreter():
-    def __init__(self):
-        self.tape = tape.Tape()
+    def __init__(self, tape_size=None):
+        if (tape_size==None):
+            self.tape = tape.Tape(30000)
+        else:
+            self.tape = tape.Tape(tape_size)
         #self.stack = stack.Stack() # Stack for loops
         self.instruction_pointer = 0 # Current instruction
         self.program = [] # The program
@@ -63,7 +66,8 @@ class BFInterpreter():
                     self.jump_map[previous_bracket]=inst
                     self.jump_map[inst] = previous_bracket
                 except:
-                    print "Missing open bracket."
+                    #print "Missing open bracket."
+                    raise
         #print self.jump_map        
         
     def output(self):
@@ -84,6 +88,7 @@ class BFInterpreter():
             self.tape.replace(temp)
         except:
             print "Error -002"
+            raise
     
     def enter_loop(self):
         """
@@ -125,7 +130,7 @@ class BFInterpreter():
            self.instructions[self.program[self.instruction_pointer]]()
            self.instruction_pointer+=1
        except tape.TapeError:
-           print "Tape underflow, instruction number: "+str(self.instruction_pointer)
+           #print "Tape underflow, instruction number: "+str(self.instruction_pointer)
            raise
 
     def debug(self):

@@ -1,6 +1,9 @@
 import bfinterpreter
 import time
 
+class SandboxError(object):
+    pass
+
 class Sandbox(object):
     """
         This is a sandbox for running limited brainfuck programs
@@ -28,7 +31,7 @@ class Sandbox(object):
         """
         if (code==None):
             return False
-        self.bfi = bfinterpreter.BFInterpreter()
+        self.bfi = bfinterpreter.BFInterpreter(1000)
         self.bfi. preprocess_program(code)
         self.start_time = int(time.time())
         while len(self.bfi.program)>(self.bfi.instruction_pointer):
@@ -43,3 +46,12 @@ class Sandbox(object):
             Return true if this code has exceeded it's memory or time allowance
         """
         return (self.max_mem < len(self.bfi.tape)) or (self.max_time <  (int(time.time()) - self.start_time))
+    
+    def top_of_tape(self, n=None):
+        """
+            Get the first n elements of the tape.
+        """
+        if (n==None):
+            raise SandboxError("No value given")
+        else:
+            return self.bfi.tape[0:n]

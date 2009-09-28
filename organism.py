@@ -42,10 +42,10 @@ class Organism(object):
             # The distance is always atleast one, so that it can be affected
             # by the length of the input code.
             # We can then try to evolve the shortest algorithm :-)
-            self.fitness = (self.distance(self.tape_top, target)+1)*len(self.code)
+            self.fitness = (self.distance(self.tape_top, target)+1)#*len(self.code)
         else:
             # This organism dies
-            self.fitness=100000000000000
+            self.fitness=None
             self.dies = True
             
         
@@ -54,15 +54,15 @@ class Organism(object):
         """
             Compare this organism with another.
         """
-        if (not self.dies):
+        if (self.dies or self.fitness==None):
+             return -1 # It has died, it must be worse than anything.
+        else:
             if (self.fitness > other_org.fitness):
                  return -1
             elif (self.fitness < other_org.fitness):
                  return 1
             else:
                  return 0
-        else:
-            return -1 # It has died, it must be less than anything.
             
         
     def distance(self, first_tape, second_tape):
@@ -70,13 +70,13 @@ class Organism(object):
             Calculate the distance between this and another tape.
         """
         pairs = zip(first_tape, second_tape)
-        return math.sqrt(abs(sum(map((lambda n: self.sub(*n)), pairs))))
+        return math.sqrt(abs(sum(map((lambda n: self.subsq(*n)), pairs))))
         
-    def sub(self, a, b):
+    def subsq(self, a, b):
         """
             The distance between 2 values
         """
-        return (a-b)
+        return ((a-b)**2)
     
     def breed(self, mate=None):
         """

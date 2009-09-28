@@ -1,9 +1,10 @@
 import evolution
 
-evolver = evolution.Evolution(50000,[1,1,2,6,24,120,720,5040,40320,362880,3628800])
+evolver = evolution.Evolution(500,[1,1,2,6,24,120,720,5040,40320,362880,3628800])
 try:
-    evolver.run(1000)
+    evolver.run(10)
 except:
     print "Some form of error"
     pass
-print evolver.population[0] # Best of the best :-p
+evolver.population.sort()# Best of the best :-p
+print evolver.population[::-1][0]
