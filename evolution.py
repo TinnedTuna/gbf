@@ -8,7 +8,7 @@ class Evolution():
     """
         Provides an environment for our litte bf organisms to evolve in.
     """
-    def __init__(self, pop_size=None, target=None):
+    def __init__(self, pop_size=None, target=None, initial=None):
         """
             Set up the environment and a default population of pop_size
         """
@@ -19,9 +19,16 @@ class Evolution():
         self.instructions = (">","<","+","-","[","]")
         self.pop_size = pop_size
         self.target = target
-        # Now seed a random population
-        while (len(self.population) <= self.pop_size):
-            self.population.append(organism.Organism(self.random_gene()))
+        # Now seed a random population, if we've been given an initial value
+        if (initial==None):
+            while (len(self.population) <= self.pop_size):
+                self.population.append(organism.Organism(self.random_gene()))
+        else:
+            # Seed the inital population
+            for code in initial:
+                self.population.append(organism.Organism(code))
+            # Breed them!
+            self.breed()
      
     def breed(self):
         """
@@ -54,7 +61,7 @@ class Evolution():
             self.population.sort()
             print " Max fitness: "+str(self.population[::-1][1].fitness)
             try:
-                if self.population[0] >=self.ppop[0]:
+                if self.population[0] <= self.ppop[0]:
                      self.ppop = self.population[::-1][0:10] # The top ten organisms
                 else:
                      self.population = self.ppop # We got worse! go back!

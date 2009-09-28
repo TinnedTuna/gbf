@@ -42,10 +42,13 @@ class Organism(object):
             # The distance is always atleast one, so that it can be affected
             # by the length of the input code.
             # We can then try to evolve the shortest algorithm :-)
-            self.fitness = (self.distance(self.tape_top, target)+1)#*len(self.code)
+            self.fitness = (self.distance(self.tape_top, target)+1)#*math.sqrt(len(self.code))
         else:
             # This organism dies
             self.fitness=None
+            self.dies = True
+        if (len(self.code) == 0):
+            self.fitness =None
             self.dies = True
             
         
