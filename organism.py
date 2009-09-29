@@ -21,7 +21,7 @@ class Organism(object):
             self.fitness=None # it hasn't run yet
             self.tape_top = None
             self.sbox = sandbox.Sandbox(3,2000) # 3 seconds to run, max
-            self.mutation_prob=0.01
+            self.mutation_prob=0.3
             self.mutation_list = [True]+[False for x in range(int(1/self.mutation_prob)-1)]
             random.shuffle(self.mutation_list)
             
@@ -42,7 +42,7 @@ class Organism(object):
             # The distance is always atleast one, so that it can be affected
             # by the length of the input code.
             # We can then try to evolve the shortest algorithm :-)
-            self.fitness = (self.distance(self.tape_top, target)+1)#*math.sqrt(len(self.code))
+            self.fitness = (self.distance(self.tape_top, target)+1)+(math.exp(0.001*len(self.code)))
         else:
             # This organism dies
             self.fitness=None
@@ -87,18 +87,25 @@ class Organism(object):
         """
         our_code = self.code
         mate_code = mate.code
+        instructs = ["+","-","[","]","<",">"]
         randint = random.randint(0, len(our_code))
         # Splice them together at random
-        result_gene=(our_code[0:randint]+mate_code[randint:])
+        result_gene=(our_code[0:randint-1]+mate_code[randint:])
         # Optionally add/remove some info.
         if (random.choice(self.mutation_list)):
-            if (random.choice([True, False])):
+            if (random.choice([True, False, False, False,])):
                 # Add info
-                result_gene = result_gene+ random.choice(["+","-","[","]","<",">"])
+                result_gene = result_gene+ random.choice(instructs)
             else:
                 # Remove info
-                rand_int = random.randint(0,len(result_gene))
-                result_gene=result_gene[0:rand_int-1].join(result_gene[rand_int:])
+                result_gene = result_gene[:-1]
+        try:
+            if (random.choice(self.mutation_list)):
+                rand = random.randint(0,len(result_gene))
+                result_gene = result_gene[:rand-1] + random.choice(instructs) + result_gene[rand:]
+        except:
+            print "Error mutating genome"
+                
         # Make a baby organism! *squee*
         return Organism(result_gene)
                 

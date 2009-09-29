@@ -104,17 +104,20 @@ class TestBFInterpreter( unittest.TestCase ):
         self.bfi.execute()
         self.assertEqual([0,0,0,0,0,0,0,0], self.bfi.tape[0:8])
         
-    def testIO(self):
-       """
-           Test the IO of the interpretter.
-           
-           Requires interaction!
-       """
-       code = ",.[-]"
-       self.bfi.preprocess_program(code)
- #      self.bfi.execute()
-       self.assertEqual(tape.Tape(), self.bfi.tape)
-       
+#===============================================================================
+#    def testIO(self):
+#       """
+#           Test the IO of the interpretter.
+#           
+#           Requires interaction!
+#       """
+#       code = ",.[-]"
+#       self.bfi.preprocess_program(code)
+# #      self.bfi.execute()
+#       self.assertEqual(tape.Tape(), self.bfi.tape)
+#       
+#===============================================================================
 if (__name__=="__main__"):
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestBFInterpreter)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+#    suite = unittest.TestLoader().loadTestsFromTestCase(TestBFInterpreter)
+ #   unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.main()

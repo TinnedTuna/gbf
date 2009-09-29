@@ -55,9 +55,12 @@ class Evolution():
         """
         gcount = 0
         while gcount<=generations:
-            print "Gen: "+str(gcount),
-            for org in self.population:
-                org.evaluate(self.target)
+            try:
+                print "Gen: "+str(gcount),
+                for org in self.population:
+                    org.evaluate(self.target)
+            except:
+                pass
             self.population.sort()
             print " Max fitness: "+str(self.population[::-1][1].fitness)
             try:
@@ -68,7 +71,10 @@ class Evolution():
             except:
                 self.ppop = self.population
             self.population = self.population[::-1][0:10]
-            self.breed()
+            try:
+                self.breed()
+            except:
+                print "Breeding error"
             gcount+=1
             
         

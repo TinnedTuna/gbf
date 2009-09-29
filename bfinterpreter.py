@@ -13,7 +13,7 @@ import tape
 class BFInterpreter():
     def __init__(self, tape_size=None):
         if (tape_size==None):
-            self.tape = tape.Tape(30000)
+            self.tape = tape.Tape() # default tape
         else:
             self.tape = tape.Tape(tape_size)
         #self.stack = stack.Stack() # Stack for loops

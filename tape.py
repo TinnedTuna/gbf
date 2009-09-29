@@ -14,7 +14,7 @@ class Tape(object):
         This tape object will automatically expand to the right should an
         overflow be detected. Default size is 30,000.
     """
-    def __init__(self, size):
+    def __init__(self, size=None):
         """
            Initalize the tape
           
@@ -115,3 +115,11 @@ class Tape(object):
             Double the length of this tape with fresh 0s
         """
         self.tape += [0 for x in range(len(self.tape))]
+        
+    def __str__(self):
+        """
+            Return a string representation of the tape.
+            
+            First 10 cells.
+        """
+        return self.tape[0:10]
