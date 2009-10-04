@@ -9,21 +9,25 @@ class Organism(object):
     """
         A class to represent a single organism.
     """
-    def __init__(self, code=None):
+    def __init__(self, code=None, base_fitness=None):
         """
             Initialize this organism with some code.
         """
+        print code, base_fitness
         if (code==None):
             raise OrganismError("No initial value supplied")
         else:
             self.dies=False
             self.code=code
-            self.fitness=None # it hasn't run yet
             self.tape_top = None
             self.sbox = sandbox.Sandbox(3,2000) # 3 seconds to run, max
-            self.mutation_prob=0.3
+            self.mutation_prob=0.45
             self.mutation_list = [True]+[False for x in range(int(1/self.mutation_prob)-1)]
             random.shuffle(self.mutation_list)
+        if (base_fitness is None):
+            self.fitness = None
+        else:
+            self.fitness = base_fitness
             
     def evaluate(self, target=None):
         """

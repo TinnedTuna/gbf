@@ -5,6 +5,13 @@ import random
 class EvolutionError():
     pass
 
+def f(n):
+    """
+        Helper function, that might be picklable
+    """
+    n[0].evaluate(n[1])
+    return (n.code,n.fitness,)
+    
 class Evolution():
     """
         Provides an environment for our litte bf organisms to evolve in.
@@ -39,6 +46,8 @@ class Evolution():
                 self.population.append(organism.Organism(code))
             # Breed them!
             self.breed()
+
+
      
     def breed(self):
         """
@@ -70,10 +79,13 @@ class Evolution():
         while gcount<=generations:
             try:
                 print "Gen: "+str(gcount),
-                f = (lambda n : n.evaluate(self.target))
-                self.pool.map(f, self.population)
+                self.population = zip (self.population, [self.target]*len(self.population))
+                self.population = self.pool.map(f, self.population)
             except:
                 pass
+            for i in self.population:
+                print i[0],i[1]
+            self.population = [organism.Organism(x[0], x[1]) for x in self.population]
             self.population.sort()
             print " Max fitness: "+str(self.population[::-1][1].fitness)
             try:
