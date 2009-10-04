@@ -45,7 +45,7 @@ class Sandbox(object):
         """
             Return true if this code has exceeded it's memory or time allowance
         """
-        return (self.max_mem < len(self.bfi.tape)) or (self.max_time <  (int(time.time()) - self.start_time))
+        return (self.max_mem < len(self.bfi.tape)+len(self.bfi.program)) or (self.max_time <  (int(time.time()) - self.start_time))
     
     def top_of_tape(self, n=None):
         """

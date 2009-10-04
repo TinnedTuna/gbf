@@ -71,7 +71,6 @@ class TestBFInterpreter( unittest.TestCase ):
         """
         code = "[+++++>]<-COMMENT-+=[morecomment[++--]>>]++--<><><[ More nesting [-[+]]<[-]]"
         self.bfi.preprocess_program(code)
-        self.bfi.build_jump_map(self.bfi.program)
    #     print "\n\n"+str(self.bfi.jump_map)+"\n\n"
         #self.assertEqual()
         #self.assert_(len([key for key in self.bfi.jump_map if key<self.bfi.jump_map[key]]) == len(self.bfi.jump_map))

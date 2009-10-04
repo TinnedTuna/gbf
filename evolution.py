@@ -1,3 +1,4 @@
+import multiprocessing
 import organism
 import random
 
@@ -8,19 +9,28 @@ class Evolution():
     """
         Provides an environment for our litte bf organisms to evolve in.
     """
-    def __init__(self, pop_size=None, target=None, initial=None):
+    def __init__(self, pop_size=None, target=None, initial=None, mp=None):
         """
             Set up the environment and a default population of pop_size
         """
-        if (target == None or pop_size==None):
+        if (mp is None):
+            self.multi = 0
+        else:
+            self.multi = mp
+        if (target is None or pop_size is None):
             raise EvolutionError("Must specify BOTH pop_size and a target")
         self.population = []
         self.ppop = None
         self.instructions = (">","<","+","-","[","]")
         self.pop_size = pop_size
         self.target = target
+        num = self.multi
+        try:
+            self.pool = multiprocessing.Pool(processes=num) # start a worker pool
+        except:
+            print "Could not allocate a worker pool"
         # Now seed a random population, if we've been given an initial value
-        if (initial==None):
+        if (initial is None):
             while (len(self.population) <= self.pop_size):
                 self.population.append(organism.Organism(self.random_gene()))
         else:
@@ -49,16 +59,19 @@ class Evolution():
             gene+=random.choice(self.instructions)
         return gene
     
+
+    
     def run(self, generations=1000):
         """
             Evolve for a specified number of generations
         """
         gcount = 0
+        
         while gcount<=generations:
             try:
                 print "Gen: "+str(gcount),
-                for org in self.population:
-                    org.evaluate(self.target)
+                f = (lambda n : n.evaluate(self.target))
+                self.pool.map(f, self.population)
             except:
                 pass
             self.population.sort()
